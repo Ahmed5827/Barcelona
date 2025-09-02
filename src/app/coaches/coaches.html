@@ -1,0 +1,170 @@
+<!-- coaches.html -->
+<div class="min-h-screen bg-base-100 p-4 ">
+  <!-- Header Section -->
+  <div class="max-w-7xl mx-auto mb-8">
+    <div class="text-center mb-8 mt-8">
+      <h1 class="text-4xl font-bold mb-2">Coaching Staff</h1>
+      <p class="text-lg opacity-70">Meet the team behind the success</p>
+      <div class="divider w-24 mx-auto"></div>
+    </div>
+
+    <!-- Loading State -->
+    @if (isLoading) {
+      <div class="flex justify-center items-center py-20">
+        <span class="loading loading-spinner loading-lg"></span>
+        <span class="ml-4 text-lg">Loading coaches...</span>
+      </div>
+    } @else if (errorMessage) {
+      <!-- Global Error State -->
+      <div class="alert alert-error max-w-md mx-auto">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Use async pipe to unwrap the observable and access data -->
+    @if (coachesResponse$ | async; as coachesData) {
+      <!-- Check for API-specific errors (if the API returned an error array but no HTTP error occurred) -->
+      @if (coachesData?.errors?.length! > 0 && !errorMessage) {
+        <div class="alert alert-warning max-w-md mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+          <span>API returned errors: {{ coachesData.errors[0] }}</span> <!-- Display first error or loop through them -->
+        </div>
+      }
+
+
+      <!-- Coaches Grid - Display if data is present and there are coaches in the response -->
+      @if (coachesData?.response && coachesData.response.length > 0) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          @for (coach of coachesData.response; track coach.id) {
+            <div class="card bg-base-100 shadow-xl">
+
+              <!-- Card Header with Photo -->
+              <figure class="px-6 pt-6">
+                <div class="avatar">
+                  <div class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                    <!-- Call onImageError function from component -->
+                    <img [src]="coach.photo" 
+                         [alt]="coach.name"
+                         (error)="onImageError($event, coach.name)" />
+                  </div>
+                </div>
+              </figure>
+
+              <div class="card-body items-center text-center">
+                <!-- Coach Name and Nationality -->
+                <div class="flex items-center gap-2 mb-2">
+                  <h2 class="card-title">{{ coach.name }}</h2>
+                  <div class="badge badge-primary badge-sm">{{ coach.nationality }}</div>
+                </div>
+                <p class="text-sm opacity-70 mb-1">{{ coach.firstname }} {{ coach.lastname }}</p>
+
+                <!-- Age Badge -->
+                <div class="badge badge-ghost mb-4">{{ coach.age }} years old</div>
+
+                <!-- Personal Info Table -->
+                <div class="overflow-x-auto w-full mb-4">
+                  <table class="table table-xs">
+                    <tbody>
+                      <tr>
+                        <td class="font-medium">Born:</td>
+                        <td>{{ coach.birth.date | date:'mediumDate' }}</td>
+                      </tr>
+                      @if (coach.birth.place) {
+                        <tr>
+                          <td class="font-medium">Place:</td>
+                          <td>{{ coach.birth.place }}, {{ coach.birth.country }}</td>
+                        </tr>
+                      }
+                      @if (coach.height) {
+                        <tr>
+                          <td class="font-medium">Height:</td>
+                          <td>{{ coach.height }}</td>
+                        </tr>
+                      }
+                      @if (coach.weight) {
+                        <tr>
+                          <td class="font-medium">Weight:</td>
+                          <td>{{ coach.weight }}</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Current Team -->
+                <div class="w-full mb-4">
+                  <div class="alert">
+                    <img [src]="coach.team.logo" [alt]="coach.team.name" class="w-6 h-6" />
+                    <span class="font-semibold">{{ coach.team.name }}</span>
+                  </div>
+                </div>
+
+                <!-- Career History -->
+                <div class="w-full">
+                  @if (coach.career) {
+                    <div class="collapse collapse-arrow bg-base-200">
+                      <input type="checkbox" />
+                      <div class="collapse-title text-sm font-medium">
+                        Career History ({{ coach.career.length }} teams)
+                      </div>
+                      <div class="collapse-content">
+                        <div class="space-y-2">
+                          @for (career of coach.career; track career.team.id) {
+                            <div class="flex items-center justify-between p-2 bg-base-100 rounded">
+                              <div class="flex items-center gap-2">
+                                <img [src]="career.team.logo" [alt]="career.team.name" class="w-4 h-4" />
+                                <span class="text-sm font-medium">{{ career.team.name }}</span>
+                              </div>
+                              <div class="text-right">
+                                <div class="text-xs opacity-70">
+                                  {{ career.start | date:'MMM yyyy' }} - @if (career.end) { {{ career.end | date:'MMM yyyy' }} } @else { Present }
+                                </div>
+                                @if (!career.end) {
+                                  <div class="badge badge-success badge-xs mt-1">Active</div>
+                                }
+                              </div>
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <!-- Empty State for Coaches -->
+            <div class="hero min-h-96 col-span-full">
+              <div class="hero-content text-center">
+                <div class="max-w-md">
+                  <div class="text-6xl mb-4">🏃‍♂️</div>
+                  <h1 class="text-5xl font-bold">No Coaches Found</h1>
+                  <p class="py-6">There are currently no coaches available for this team.</p>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      } @else if (!coachesData?.response?.length && !isLoading && !errorMessage) {
+        <!-- Fallback if coachesData is there but response array is empty, and not loading/erroring -->
+        <div class="hero min-h-96 col-span-full">
+          <div class="hero-content text-center">
+            <div class="max-w-md">
+              <div class="text-6xl mb-4">🤷</div>
+              <h1 class="text-5xl font-bold">No Coaches Data</h1>
+              <p class="py-6">It seems like there's no coach data available at all or the response was empty.</p>
+            </div>
+          </div>
+        </div>
+      }
+    } @else {
+      <!-- Initial state before any data is loaded, or if async pipe didn't emit and no explicit loading/error -->
+      <div class="flex justify-center items-center py-20 text-lg opacity-80">
+        Initializing coaches display...
+      </div>
+    }
+  </div>
+</div>

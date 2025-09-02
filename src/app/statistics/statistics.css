@@ -1,0 +1,426 @@
+/* src/app/statistics/statistics.component.css */
+.statistics-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header Styles */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+/* Loading Styles */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error Styles */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px 20px;
+  border-radius: 8px;
+  border: 1px solid #f5c6cb;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.error-icon {
+  font-size: 1.2rem;
+}
+
+/* Season Selector */
+.season-selector {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.season-selector h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.season-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.season-tab {
+  padding: 12px 24px;
+  border: 2px solid #ddd;
+  background: white;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.season-tab:hover {
+  border-color: #007bff;
+  background-color: #f8f9fa;
+}
+
+.season-tab.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* Team Info */
+.team-info {
+  margin-bottom: 30px;
+}
+
+.team-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+}
+
+.team-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: white;
+  padding: 10px;
+}
+
+.team-details h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.league-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+}
+
+.league-logo {
+  width: 30px;
+  height: 30px;
+}
+
+.country-flag {
+  width: 25px;
+  height: auto;
+}
+
+/* Season Comparison */
+.season-comparison {
+  margin-bottom: 40px;
+}
+
+.season-comparison h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.season-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.season-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.season-card.selected {
+  border-color: #007bff;
+  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.2);
+}
+
+.season-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.season-card-header h4 {
+  font-size: 1.3rem;
+  color: #333;
+  margin: 0;
+}
+
+.win-percentage {
+  background: #28a745;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.season-card-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.stat .label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.stat .value {
+  font-weight: 600;
+  color: #333;
+}
+
+.stat .value.won { color: #28a745; }
+.stat .value.drawn { color: #ffc107; }
+.stat .value.lost { color: #dc3545; }
+.stat .value.positive { color: #28a745; }
+.stat .value.negative { color: #dc3545; }
+
+/* Detailed Statistics */
+.detailed-stats {
+  margin-top: 40px;
+}
+
+.detailed-stats h3 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.stats-section {
+  margin-bottom: 40px;
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stats-section h4 {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 4px solid #007bff;
+}
+
+.stat-card h5 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Form Display */
+.form-display {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.form-result {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.form-result.win { background-color: #28a745; }
+.form-result.draw { background-color: #ffc107; color: #333; }
+.form-result.loss { background-color: #dc3545; }
+
+/* Home Away Stats */
+.home-away-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.home-stats, .away-stats {
+  text-align: center;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.home-stats {
+  background-color: #e3f2fd;
+  border: 1px solid #2196f3;
+}
+
+.away-stats {
+  background-color: #f3e5f5;
+  border: 1px solid #9c27b0;
+}
+
+.home-stats h6, .away-stats h6 {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Time Stats */
+.time-stats, .cards-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.time-slot, .card-time-slot {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 8px;
+  background: white;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.time, .goals, .cards, .percentage {
+  text-align: center;
+}
+
+.time {
+  font-weight: 600;
+  color: #007bff;
+}
+
+/* Over Under Stats */
+.over-under-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.over-under-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+  background: white;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.threshold {
+  font-weight: 600;
+  color: #333;
+}
+
+.over {
+  color: #28a745;
+  text-align: center;
+}
+
+.under {
+  color: #dc3545;
+  text-align: center;
+}
+
+/* Formations */
+.formations {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formation {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.formation h5 {
+  font-size: 1.1rem;
+  color: #333;
+  margin: 0;
+}
+
+.formation .players {
+  display: flex;
+  gap: 8px;
+}
+
+.formation .player {
+  background: #f8f9fa;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  color: #333;
+}

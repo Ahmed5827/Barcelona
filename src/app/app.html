@@ -8,10 +8,10 @@
         </svg>
       </div>
       <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-        <li><a>About us</a></li>
-        <li><a>Statistics</a></li>
-        <li><a>Coaches</a></li>
-        <li><a>Players</a></li>
+        <li><a [routerLink]="['/about']" routerLinkActive="active">About us</a></li>
+        <li><a [routerLink]="['/statistics']" routerLinkActive="active">Statistics</a></li>
+        <li><a [routerLink]="['/coaches']" routerLinkActive="active">Coaches</a></li>
+        <li><a [routerLink]="['/players']" routerLinkActive="active">Players</a></li>
       </ul>
     </div>
     <a class="flex items-center text-xl whitespace-nowrap">
@@ -22,15 +22,16 @@
 
   <div class="navbar-center hidden lg:flex flex-grow">
     <ul class="menu menu-horizontal w-full justify-evenly gap-x-30">
-      <li><a>About us</a></li>
-      <li><a>Statistics</a></li>
-      <li><a>Coaches</a></li>
-      <li><a>Players</a></li>
+        <li><a [routerLink]="['/about']" routerLinkActive="active">About us</a></li>
+        <li><a [routerLink]="['/statistics']" routerLinkActive="active">Statistics</a></li>
+        <li><a [routerLink]="['/coaches']" routerLinkActive="active">Coaches</a></li>
+        <li><a [routerLink]="['/players']" routerLinkActive="active">Players</a></li>
     </ul>
   </div>
 
   <!-- Empty navbar-end to correctly balance the flexbox for centering -->
   <div class="navbar-end"></div>
 </div>
+<router-outlet></router-outlet>
 
-<app-about-us></app-about-us>
+<app-footer></app-footer>

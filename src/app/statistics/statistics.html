@@ -1,0 +1,281 @@
+<!-- src/app/statistics/statistics.component.html -->
+<div class="max-w-7xl mx-auto p-5 font-sans">
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h1 class="text-4xl font-bold text-base-content mb-5">Team Statistics Dashboard</h1>
+    
+    <!-- Loading State -->
+    @if (loading) {
+      <div class="flex flex-col items-center py-10">
+        <div class="loading loading-spinner loading-lg text-primary mb-5"></div>
+        <p class="text-base-content/70">Loading statistics for multiple seasons...</p>
+      </div>
+    }
+    
+    <!-- Error State -->
+    @if (errorMessage) {
+      <div class="alert alert-error mb-5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+  </div>
+
+  <!-- Main Content -->
+  @if (multiSeasonStats$ | async; as multiSeasonStats) {
+    @if (multiSeasonStats && !loading) {
+      <!-- Season Selector -->
+      <div class="mb-8 text-center">
+        <h2 class="text-2xl font-semibold text-base-content mb-5">Select Season</h2>
+        <div class="flex justify-center gap-2 flex-wrap">
+          @for (season of SEASONS; track season) {
+            <button 
+              class="btn btn-outline"
+              [class.btn-primary]="selectedSeason === season"
+              (click)="selectSeason(season)">
+              {{ season }}/{{ season + 1 }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Team Info -->
+      @if (multiSeasonStats[selectedSeason]; as seasonData) {
+        <div class="mb-8">
+          <div class="bg-gradient-to-r from-primary to-secondary p-6 rounded-2xl text-primary-content">
+            <div class="flex items-center gap-5">
+              <div class="avatar">
+                <div class="w-20  p-2">
+                  <img [src]="seasonData.response.team.logo" [alt]="seasonData.response.team.name">
+                </div>
+              </div>
+              <div class="flex-1">
+                <h2 class="text-3xl font-bold mb-2">{{ seasonData.response.team.name }}</h2>
+                <div class="flex items-center gap-3 text-lg">
+                  <div class="avatar">
+                    <div class="w-8 rounded">
+                      <img [src]="seasonData.response.league.logo" [alt]="seasonData.response.league.name">
+                    </div>
+                  </div>
+                  <span>{{ seasonData.response.league.name }} {{ selectedSeason }}/{{ selectedSeason + 1 }}</span>
+                  <div class="avatar">
+                    <div class="w-6 rounded">
+                      <img [src]="seasonData.response.league.flag" [alt]="seasonData.response.league.country">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Season Comparison Cards -->
+        <div class="mb-10">
+          <h3 class="text-2xl font-bold mb-5 text-base-content">Season Comparison</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            @for (season of SEASONS; track season) {
+              @if (multiSeasonStats[season]; as data) {
+                <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+                     [class.ring-2]="selectedSeason === season"
+                     [class.ring-primary]="selectedSeason === season">
+                  <div class="card-body">
+                    <div class="flex justify-between items-center mb-4 pb-4 border-b border-base-300">
+                      <h4 class="card-title text-lg">{{ season }}/{{ season + 1 }}</h4>
+                      <div class="badge badge-success badge-lg font-semibold">
+                        {{ getWinPercentage(data.response) }}% Win
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                      <div class="flex justify-between">
+                        <span class="text-base-content/70">Played</span>
+                        <span class="font-semibold">{{ data.response.fixtures.played.total }}</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-base-content/70">Won</span>
+                        <span class="font-semibold text-success">{{ data.response.fixtures.wins.total }}</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-base-content/70">Drawn</span>
+                        <span class="font-semibold text-warning">{{ data.response.fixtures.draws.total }}</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-base-content/70">Lost</span>
+                        <span class="font-semibold text-error">{{ data.response.fixtures.loses.total }}</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-base-content/70">Goals For</span>
+                        <span class="font-semibold">{{ data.response.goals.for.total.total }}</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-base-content/70">Goals Against</span>
+                        <span class="font-semibold">{{ data.response.goals.against.total.total }}</span>
+                      </div>
+                      <div class="flex justify-between col-span-2">
+                        <span class="text-base-content/70">Goal Difference</span>
+                        <span class="font-semibold" 
+                              [class.text-success]="getGoalDifference(data.response) > 0" 
+                              [class.text-error]="getGoalDifference(data.response) < 0">
+                          {{ getGoalDifference(data.response) > 0 ? '+' : '' }}{{ getGoalDifference(data.response) }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Detailed Statistics for Selected Season -->
+        <div class="space-y-8">
+          <h3 class="text-2xl font-bold text-base-content">{{ selectedSeason }}/{{ selectedSeason + 1 }} Season Details</h3>
+          
+          <!-- Performance Overview -->
+          <div class="card bg-base-100 shadow-lg">
+            <div class="card-body">
+              <h4 class="card-title text-xl mb-6 border-b-2 border-primary pb-3">Performance Overview</h4>
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-base-200 rounded-lg p-5 border-l-4 border-primary">
+                  <h5 class="text-lg font-semibold mb-4">Form (Last 10)</h5>
+                  <div class="flex gap-2 flex-wrap">
+                    @for (result of getFormattedForm(seasonData.response.form, 10).split(' '); track $index) {
+                      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm"
+                           [class.bg-success]="result === 'W'"
+                           [class.bg-warning]="result === 'D'"
+                           [class.bg-error]="result === 'L'"
+                           [class.text-base-content]="result === 'D'">
+                        {{ result }}
+                      </div>
+                    }
+                  </div>
+                </div>
+                
+                <div class="bg-base-200 rounded-lg p-5 border-l-4 border-primary">
+                  <h5 class="text-lg font-semibold mb-4">Home vs Away</h5>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center p-4 bg-info/10 border border-info rounded-lg">
+                      <h6 class="font-semibold text-info mb-2">Home</h6>
+                      <p class="text-sm mb-1">{{ seasonData.response.fixtures.wins.home }}W - {{ seasonData.response.fixtures.draws.home }}D - {{ seasonData.response.fixtures.loses.home }}L</p>
+                      <p class="text-sm">Goals: {{ seasonData.response.goals.for.total.home }} - {{ seasonData.response.goals.against.total.home }}</p>
+                    </div>
+                    <div class="text-center p-4 bg-secondary/10 border border-secondary rounded-lg">
+                      <h6 class="font-semibold text-secondary mb-2">Away</h6>
+                      <p class="text-sm mb-1">{{ seasonData.response.fixtures.wins.away }}W - {{ seasonData.response.fixtures.draws.away }}D - {{ seasonData.response.fixtures.loses.away }}L</p>
+                      <p class="text-sm">Goals: {{ seasonData.response.goals.for.total.away }} - {{ seasonData.response.goals.against.total.away }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Goal Statistics -->
+          <div class="card bg-base-100 shadow-lg">
+            <div class="card-body">
+              <h4 class="card-title text-xl mb-6 border-b-2 border-primary pb-3">Goal Statistics</h4>
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-base-200 rounded-lg p-5 border-l-4 border-primary">
+                  <h5 class="text-lg font-semibold mb-4">Goals by Time Period</h5>
+                  <div class="space-y-2">
+                    @for (timeSlot of ['0-15', '16-30', '31-45', '46-60', '61-75', '76-90', '91-105']; track timeSlot) {
+                      @if (seasonData.response.goals.for.minute[timeSlot]; as goalData) {
+                        <div class="grid grid-cols-3 gap-3 p-2 bg-base-100 rounded text-sm">
+                          <span class="font-semibold text-primary text-center">{{ timeSlot }}'</span>
+                          <span class="text-center">{{ goalData.total || 0 }} goals</span>
+                          <span class="text-center text-base-content/70">({{ goalData.percentage || '0%' }})</span>
+                        </div>
+                      }
+                    }
+                  </div>
+                </div>
+                
+                <div class="bg-base-200 rounded-lg p-5 border-l-4 border-primary">
+                  <h5 class="text-lg font-semibold mb-4">Over/Under Goals</h5>
+                  <div class="space-y-3">
+                    @for (threshold of ['0.5', '1.5', '2.5', '3.5']; track threshold) {
+                      @if (seasonData.response.goals.for.under_over[threshold]; as data) {
+                        <div class="grid grid-cols-3 gap-3 p-3 bg-base-100 rounded text-sm">
+                          <span class="font-semibold">{{ threshold }} goals</span>
+                          <span class="text-success text-center">Over: {{ data.over }}</span>
+                          <span class="text-error text-center">Under: {{ data.under }}</span>
+                        </div>
+                      }
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formations -->
+          <div class="card bg-base-100 shadow-lg">
+            <div class="card-body">
+              <h4 class="card-title text-xl mb-6 border-b-2 border-primary pb-3">Most Used Formations</h4>
+              <div class="space-y-4">
+                @for (lineup of seasonData.response.lineups; track lineup.formation) {
+                  <div class="flex items-center justify-between p-4 bg-base-200 rounded-lg border border-base-300">
+                    <div class="flex items-center gap-4">
+                      <span class="text-lg font-semibold">{{ lineup.formation }}</span>
+                      <span class="badge badge-outline">{{ lineup.played }} games</span>
+                    </div>
+                    <div class="w-32">
+                      <progress class="progress progress-primary" 
+                                [value]="lineup.played" 
+                                [max]="seasonData.response.fixtures.played.total"></progress>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Disciplinary -->
+          <div class="card bg-base-100 shadow-lg">
+            <div class="card-body">
+              <h4 class="card-title text-xl mb-6 border-b-2 border-primary pb-3">Disciplinary Record</h4>
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-base-200 rounded-lg p-5 border-l-4 border-primary">
+                  <h5 class="text-lg font-semibold mb-4">
+                    <span class="mr-2">🟨</span>
+                    Yellow Cards by Time
+                  </h5>
+                  <div class="space-y-2">
+                    @for (timeSlot of ['0-15', '16-30', '31-45', '46-60', '61-75', '76-90', '91-105']; track timeSlot) {
+                      @if (seasonData.response.cards.yellow[timeSlot]; as cardData) {
+                        <div class="grid grid-cols-3 gap-3 p-2 bg-base-100 rounded text-sm">
+                          <span class="font-semibold text-primary text-center">{{ timeSlot }}'</span>
+                          <span class="text-center">{{ cardData.total || 0 }}</span>
+                          <span class="text-center text-base-content/70">({{ cardData.percentage || '0%' }})</span>
+                        </div>
+                      }
+                    }
+                  </div>
+                </div>
+                
+                <div class="bg-base-200 rounded-lg p-5 border-l-4 border-primary">
+                  <h5 class="text-lg font-semibold mb-4">Other Records</h5>
+                  <div class="space-y-3">
+                    <div class="flex justify-between items-center p-2 bg-base-100 rounded">
+                      <span class="text-base-content/70">Clean Sheets:</span>
+                      <span class="font-semibold badge badge-success">{{ seasonData.response.clean_sheet.total }}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-base-100 rounded">
+                      <span class="text-base-content/70">Failed to Score:</span>
+                      <span class="font-semibold badge badge-error">{{ seasonData.response.failed_to_score.total }}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-base-100 rounded">
+                      <span class="text-base-content/70">Penalties Scored:</span>
+                      <span class="font-semibold badge badge-info">{{ seasonData.response.penalty.scored.total }}/{{ seasonData.response.penalty.total }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    }
+  }
+</div>

@@ -1,0 +1,20 @@
+<div class="flex justify-center items-center py-8">
+  <h2 class="text-3xl font-bold text-yellow-500 mb-6">Our Sponsors</h2>
+</div>
+
+<div class="flex flex-wrap justify-center items-center gap-8 px-10 py-6">
+  @for (sponsor of sponsors; track $index) {
+    <div class="w-89 h-76 flex flex-col items-center justify-center rounded-xl shadow-xl overflow-hidden">
+      <!-- FC Barcelona colors applied -->
+      <div class="w-full h-56 flex">
+        <div class="w-1/4 bg-[#004D98]"></div> <!-- Blue -->
+        <div class="w-2/4 bg-[#A50044] flex items-center justify-center">
+          <img src="{{sponsor.logo}}" alt="{{sponsor.name}} logo"
+               class="sponsor-logo px-3 w-52 h-44 object-contain">
+        </div> <!-- Garnet -->
+        <div class="w-1/4 bg-[#004D98]"></div> <!-- Blue -->
+      </div>
+      <h3 class="text-xl text-center font-semibold mt-3 text-yellow-500">{{sponsor.name}}</h3>
+    </div>
+  }
+</div>

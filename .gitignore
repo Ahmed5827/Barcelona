@@ -43,4 +43,6 @@ testem.log
 Thumbs.db
 
 # Environment file
-/src/environments/environment.prod.ts
+/src/environments/*
+/src/.env
+.vercel

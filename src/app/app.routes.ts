@@ -10,5 +10,9 @@ export const routes: Routes = [
     { path: 'statistics', component: Statistics },
     { path: 'coaches', component: CoachesComponent },
     { path: 'players', component: Squad },
-    { path: 'players/:id', component: Player },
+  { 
+    path: 'players/:id', 
+    component: Player,
+    data: { prerender: false }  
+  },
 ];

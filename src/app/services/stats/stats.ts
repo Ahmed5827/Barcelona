@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, forkJoin, map } from 'rxjs';
 import { TeamStatsResponse } from '../../interfaces/team-stats';
-import { environment } from './../../../environments/environment.prod';
+import { environment } from './../../../environments/environment';
 export interface MultiSeasonStats {
   [season: number]: TeamStatsResponse;
 }

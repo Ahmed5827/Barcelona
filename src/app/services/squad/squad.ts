@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from './../../../environments/environment.prod';
+import { environment } from './../../../environments/environment';
 import { squad } from '../../interfaces/squad';
 import { Observable } from 'rxjs';
 
@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class squadservice {
   
   private http = inject(HttpClient);
-  private baseUrl = "https://v3.football.api-sports.io/players/squads?team=529"
+  private baseUrl = "https://v3.football.api-sports.io/players/squads"
   private apikey = environment.apiKey ? environment.apiKey : '';
   
   getSquad(teamId: number): Observable<squad> {

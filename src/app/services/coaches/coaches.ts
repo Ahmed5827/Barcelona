@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CoachesResponse } from './../../interfaces/coaaches'; // Fixed path - should be 'coaches' not 'coaaches'
-import { environment } from './../../../environments/environment.prod';
+import { environment } from './../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })

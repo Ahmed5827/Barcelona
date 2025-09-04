@@ -1,31 +1,38 @@
-<div class="flex flex-row justify-center items-center px-20">
-<div class="text-center text-8xl font-bold mt-4 text-amber-400 mr-10 px-3 whitespace-nowrap">
-  About Us
-</div>
-    
-    
-
-<div class="card bg-base-100 image-full w-full h-60 shadow-sm">
-  <figure>
-    <img
-      src="/barca.jpg"
-      alt="FC Barcelona"
-      class="w-full h-full object-cover rounded-lg" />
-  </figure>
-  <div class="card-body text-white space-y-4">
-    <h2 class="text-3xl font-bold drop-shadow-lg">FC Barcelona</h2>
-    <p class="text-lg leading-relaxed drop-shadow-md">
-      Founded in <span class="font-semibold text-yellow-300">1899</span>, FC Barcelona is more than a football club —
-      it is a symbol of passion, identity, and sporting excellence. Known worldwide as
-      <span class="italic text-blue-300">Barça</span>, the club has built a proud legacy of success on the pitch,
-      with countless domestic and international titles, while staying true to its values of creativity,
-      teamwork, and social responsibility.
-    </p>
-    <p class="text-lg leading-relaxed drop-shadow-md">
-      Rooted deeply in Catalan culture, FC Barcelona represents
-      <span class="font-semibold italic text-red-400">“Més que un club”</span> (“More than a club”),
-      uniting millions of fans across the globe with its iconic style of play, legendary players,
-      and unwavering commitment to community and innovation in sport.
-    </p>
+<div class="flex flex-col lg:flex-row justify-center items-center px-4 sm:px-8 md:px-12 lg:px-20 py-8">
+  <div class="text-center text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 lg:mb-0 lg:mr-10 px-3 whitespace-nowrap text-amber-400">
+    About Us
   </div>
-</div>
+
+  <!--
+    THE DEFINITIVE SOLUTION:
+    - No fixed height (h-96) is ever used.
+    - On large screens, we set a MINIMUM height (lg:min-h-96).
+    - This means the card will be AT LEAST 96 units tall on desktop, but will
+      dynamically grow taller if the text needs more space. This is the
+      best of both worlds.
+  -->
+  <div class="card bg-base-100 image-full w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-4xl lg:min-h-96 shadow-sm overflow-hidden">
+    <figure>
+      <img src="/barca.jpg" alt="FC Barcelona" class="w-full h-full object-cover" />
+    </figure>
+
+    <!--
+      - We vertically center the content (justify-center). This works now because the
+        card's height is always correct for its content, or larger on desktop,
+        so nothing will ever be pushed out of view.
+    -->
+    <div class="card-body text-white p-6 sm:p-8 flex flex-col justify-center items-center">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold drop-shadow-lg text-center mb-2 sm:mb-3">FC Barcelona</h2>
+      <p class="mt-15 text-5xl sm:text-lg md:text-3xl leading-relaxed drop-shadow-md text-center max-w-prose">
+        Founded in <span class="font-semibold text-yellow-300">1899</span>, FC Barcelona is more than a football club
+        it is a symbol of passion, identity, and sporting excellence. Known worldwide as
+        <span class="italic text-blue-300">Barça</span>, the club has built a proud legacy of success on the pitch,
+        with countless domestic and international titles, while staying true to its values of creativity,
+        teamwork, and social responsibility. Rooted deeply in Catalan culture, FC Barcelona represents
+        <span class="font-semibold italic text-red-400">“Més que un club”</span> (“More than a club”),
+        uniting millions of fans across the globe with its iconic style of play, legendary players,
+        and unwavering commitment to community and innovation in sport.
+      </p>
+    </div>
+  </div>
+</div>`

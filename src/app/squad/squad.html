@@ -5,7 +5,7 @@
       <span class="loading loading-spinner loading-lg text-primary"></span>
       <p class="text-lg">Loading squad data...</p>
     </div>
-  }
+  }@else {}
   
   <!-- Error State -->
   @if (error && !isLoading) {
@@ -55,7 +55,7 @@
                     @for (player of getPlayersByPosition(Position.Goalkeeper, squadData); track player.id) {
                       <div class="card bg-base-200 shadow-md hover:shadow-lg transition-shadow border-l-4 border-success">
                         <div class="card-body p-4">
-                          <div class="flex items-center gap-4">
+                          <div class="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left gap-4">
                             <div class="avatar">
                               <div class="w-16 h-16 rounded-full ring ring-success ring-offset-base-100 ring-offset-2">
                                 <img [src]="player.photo" [alt]="player.name" />
@@ -63,12 +63,14 @@
                             </div>
                             <div class="flex-1">
                               <h3 class="font-bold text-lg">{{ player.name }}</h3>
-                              <div class="flex gap-2 items-center mt-2">
+                              <div class="flex gap-2 items-center justify-center sm:justify-start mt-2">
                                 <div class="badge badge-success font-bold">#{{ player.number }}</div>
                                 <div class="text-sm opacity-70">Age: {{ player.age }}</div>
                               </div>
                             </div>
-<button (click)="navigateToPlayer(player)" class="btn btn-outline btn-error">Achievements</button>
+                            <div class="flex flex-row gap-2 w-full sm:w-auto">
+                              <button (click)="navigateToPlayer(player)" class="btn btn-outline btn-success flex-1 sm:flex-none">Achievements</button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -91,7 +93,7 @@
                     @for (player of getPlayersByPosition(Position.Defender, squadData); track player.id) {
                       <div class="card bg-base-200 shadow-md hover:shadow-lg transition-shadow border-l-4 border-info">
                         <div class="card-body p-4">
-                          <div class="flex items-center gap-4">
+                          <div class="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left gap-4">
                             <div class="avatar">
                               <div class="w-16 h-16 rounded-full ring ring-info ring-offset-base-100 ring-offset-2">
                                 <img [src]="player.photo" [alt]="player.name" />
@@ -99,12 +101,14 @@
                             </div>
                             <div class="flex-1">
                               <h3 class="font-bold text-lg">{{ player.name }}</h3>
-                              <div class="flex gap-2 items-center mt-2">
+                              <div class="flex gap-2 items-center justify-center sm:justify-start mt-2">
                                 <div class="badge badge-info font-bold">#{{ player.number }}</div>
                                 <div class="text-sm opacity-70">Age: {{ player.age }}</div>
                               </div>
                             </div>
-                            <button (click)="navigateToPlayer(player)" class="btn btn-outline btn-info">Achievements</button>
+                            <div class="flex flex-row gap-2 w-full sm:w-auto">
+                              <button (click)="navigateToPlayer(player)" class="btn btn-outline btn-info flex-1 sm:flex-none">Achievements</button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -127,7 +131,7 @@
                     @for (player of getPlayersByPosition(Position.Midfielder, squadData); track player.id) {
                       <div class="card bg-base-200 shadow-md hover:shadow-lg transition-shadow border-l-4 border-warning">
                         <div class="card-body p-4">
-                          <div class="flex items-center gap-4">
+                          <div class="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left gap-4">
                             <div class="avatar">
                               <div class="w-16 h-16 rounded-full ring ring-warning ring-offset-base-100 ring-offset-2">
                                 <img [src]="player.photo" [alt]="player.name" />
@@ -135,12 +139,14 @@
                             </div>
                             <div class="flex-1">
                               <h3 class="font-bold text-lg">{{ player.name }}</h3>
-                              <div class="flex gap-2 items-center mt-2">
+                              <div class="flex gap-2 items-center justify-center sm:justify-start mt-2">
                                 <div class="badge badge-warning font-bold">#{{ player.number }}</div>
                                 <div class="text-sm opacity-70">Age: {{ player.age }}</div>
                               </div>
                             </div>
-                            <button (click)="navigateToPlayer(player)" class="btn btn-outline btn-warning">Achievements</button>
+                            <div class="flex flex-row gap-2 w-full sm:w-auto">
+                              <button (click)="navigateToPlayer(player)" class="btn btn-outline btn-warning flex-1 sm:flex-none">Achievements</button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -163,7 +169,7 @@
                     @for (player of getPlayersByPosition(Position.Attacker, squadData); track player.id) {
                       <div class="card bg-base-200 shadow-md hover:shadow-lg transition-shadow border-l-4 border-error">
                         <div class="card-body p-4">
-                          <div class="flex items-center gap-4">
+                          <div class="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left gap-4">
                             <div class="avatar">
                               <div class="w-16 h-16 rounded-full ring ring-error ring-offset-base-100 ring-offset-2">
                                 <img [src]="player.photo" [alt]="player.name" />
@@ -171,12 +177,14 @@
                             </div>
                             <div class="flex-1">
                               <h3 class="font-bold text-lg">{{ player.name }}</h3>
-                              <div class="flex gap-2 items-center mt-2">
+                              <div class="flex gap-2 items-center justify-center sm:justify-start mt-2">
                                 <div class="badge badge-error font-bold">#{{ player.number }}</div>
                                 <div class="text-sm opacity-70">Age: {{ player.age }}</div>
                               </div>
                             </div>
-                            <button (click)="navigateToPlayer(player)" class="btn btn-outline btn-error">Achievements</button>
+                            <div class="flex flex-row gap-2 w-full sm:w-auto">
+                              <button (click)="navigateToPlayer(player)" class="btn btn-outline btn-error flex-1 sm:flex-none">Achievements</button>
+                            </div>
                           </div>
                         </div>
                       </div>
